@@ -62,6 +62,20 @@ router.put('/:id', (req, res) => {
     }
 });
 
+//delete
+
+router.delete('/:id',(req,res)=>{
+        //res.send(req.params.id);
+        const found = members.some(member=>member.id===parseInt(req.params.id));
+        if(found){
+            res.json({msg:'member deleted',member:members.filter(member=>member.id!==parseInt(req.params.id))});
+        }
+        else{
+            res.status(400).json({msg:'No member with id of ' + req.params.id});
+        }
+        
+    });
+
 
 
 
