@@ -2,26 +2,30 @@ const members = require('../../Members');
 const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
+const usersmy = require('../../Usersmy');
 
+
+
+//sign in 
 
 
 //get  member
-router.get('/',(req,res)=>{
-    res.json(members);
-    });
+// router.get('/',(req,res)=>{
+//     res.json(members);
+//     });
     
-//get single members
-router.get('/:id',(req,res)=>{
-        //res.send(req.params.id);
-        const found = members.some(member=>member.id===parseInt(req.params.id));
-        if(found){
-            res.json(members.filter(member=>member.id===parseInt(req.params.id)));
-        }
-        else{
-            res.status(400).json({msg:'No member with id of ' + req.params.id});
-        }
+// //get single members
+// router.get('/:id',(req,res)=>{
+//         //res.send(req.params.id);
+//         const found = members.some(member=>member.id===parseInt(req.params.id));
+//         if(found){
+//             res.json(members.filter(member=>member.id===parseInt(req.params.id)));
+//         }
+//         else{
+//             res.status(400).json({msg:'No member with id of ' + req.params.id});
+//         }
         
-    });
+//     });
 
 //create member
 router.post('/',(req,res)=>{
@@ -30,6 +34,7 @@ router.post('/',(req,res)=>{
         id: uuid.v4(),
         name:req.body.name,
         email:req.body.email,
+        password:req.body.password,
         status:'active'
     };
     if(!newMember.name||!newMember.email){
@@ -77,6 +82,21 @@ router.delete('/:id',(req,res)=>{
     });
 
 
-
+//signin
+router.get('/signin',(req,res)=>{
+  //  const found = members.some(member=>member.id)
+  //const found = users.some(user=>user.email===req.body.email && user.password===req.body.password);
+  
+  const found = members.some(member=>member.email===req.body.email
+    &&
+    member.password===req.body.password
+    );
+    if(found){
+     res.json({msg:"succesful"});
+    }
+    else{
+        res.json({msg:"unsuccesful"});
+    }
+})
 
 module.exports = router;
